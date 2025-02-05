@@ -32,3 +32,20 @@ Fixpoint sum (l : list nat) : nat :=
   | [] => 0
   | x :: xs => x + sum xs
   end.
+
+Lemma seq_plus_gen : forall a n, forall b,
+  seq (a + b) n = map (fun x => x + a) (seq b n).
+Proof.
+  intros a n.
+  generalize dependent a.
+  induction n as [| n' IH]; intros a b.
+  - simpl; reflexivity.
+  - simpl.
+    f_equal.
+    + apply Nat.add_comm.
+    + (* Now we need to show:
+           seq ((a+b)+1) n' = map (fun x => x + a) (seq (b+1) n').
+         Observe that (a+b)+1 = a+(b+1), so we can apply the induction hypothesis with b replaced by b+1. *)
+      rewrite <- Nat.add_succ_r.
+      apply IH.
+Qed.
