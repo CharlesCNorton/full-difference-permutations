@@ -49,3 +49,13 @@ Proof.
       rewrite <- Nat.add_succ_r.
       apply IH.
 Qed.
+
+Lemma sum_app : forall (l m : list nat),
+  sum (l ++ m) = sum l + sum m.
+Proof.
+  induction l as [| x xs IH]; intros m; simpl.
+  - reflexivity.
+  - rewrite IH.
+    rewrite Nat.add_assoc.
+    reflexivity.
+Qed.
